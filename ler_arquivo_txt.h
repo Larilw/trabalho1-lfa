@@ -25,17 +25,39 @@ typedef struct{
 
 }Leitura_do_arquivo;
 
-/*Divisão da linha lida e gravação */
+/*Guarda o estado inicial do automato
+  Entrada: String com a linha lida, ponteiro que aponta para a struct automato
+  Retorno: Nenhum
+  Pré-condição: Arquivo lido e dividido de acordo com o número da linha 
+  Pós-condição: Preenchimento do campo de estado inicial na struct automato
+*/
 void grava_inicial(char *linha_lida, Leitura_do_arquivo *automato);
+
 
 void grava_conjuntos(char *linha_lida,int numero_da_linha, Leitura_do_arquivo *automato);
 
 
 void grava_transicoes(char *linha_lida);
 
+
+/*Classifica as linhas lidas conforme o número da linha, 
+chama as funções de gravação para cada caso diferente
+  Entrada: String com a linha lida, inteiro representando o número da linha, 
+  ponteiro que aponta para a struct automato
+  Retorno: Nenhum
+  Pré-condição: Arquivo ter sido lido com sucesso
+  Pós-condição: O arquivo é dividido para gravação 
+*/
 void gravacao_do_txt(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *automato);
 
 
+/*Lê o arquivo fornecido pelo usuário linha por linha e exibe 
+uma mensagem de erro caso não consiga ler corretamente o arquivo
+  Entrada: String com o nome do arquivo
+  Retorno: Inteiro que representa sucesso ou não na leitura do arquivo
+  Pré-condição: Receber um arquivo
+  Pós-condição: O arquivo é lido e processado 
+*/
 int leitura_do_txt(char *nome_do_arquivo);
 
 
