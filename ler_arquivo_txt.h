@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #define TAMANHO_MAX 150
 #define TAMANHO_MATRIZ_MAX 20
 
@@ -21,7 +22,6 @@ typedef struct{
     char estados[TAMANHO_MATRIZ_MAX][TAMANHO_MATRIZ_MAX];
     char estado_inicial[TAMANHO_MAX];
     char estados_finais[TAMANHO_MATRIZ_MAX][TAMANHO_MATRIZ_MAX];
-    Transicao transicao[TAMANHO_MAX];
 
 }Leitura_do_arquivo;
 
@@ -33,11 +33,7 @@ typedef struct{
 */
 void grava_inicial(char *linha_lida, Leitura_do_arquivo *automato);
 
-
-void grava_conjuntos(char *linha_lida,int numero_da_linha, Leitura_do_arquivo *automato);
-
-
-void grava_transicoes(char *linha_lida);
+void grava_transicoes(char *linha_lida, Leitura_do_arquivo *automato, int i);
 
 
 /*Classifica as linhas lidas conforme o número da linha, 
@@ -48,8 +44,9 @@ chama as funções de gravação para cada caso diferente
   Pré-condição: Arquivo ter sido lido com sucesso
   Pós-condição: O arquivo é dividido para gravação 
 */
-void gravacao_do_txt(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *automato);
-
+void gravacao_do_txt(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *automato,
+        Transicao transicao[],int *tamanho_alfabeto_entrada, int *tamanho_alfabeto_saida,
+        int *numero_de_estados, int *numero_de_transicoes);
 
 /*Lê o arquivo fornecido pelo usuário linha por linha e exibe 
 uma mensagem de erro caso não consiga ler corretamente o arquivo
