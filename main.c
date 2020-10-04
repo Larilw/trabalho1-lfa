@@ -1,7 +1,12 @@
-#include "ler_arquivo_txt.h"
 #include <stdio.h>
+#include "ler_arquivo_txt.h"
+#include "transicao.h"
 
 int main(){
-    leitura_do_txt("teste.txt");
+    Transicao_unitaria t;
+    Transicao transicao;
+    leitura_do_txt("teste.txt", &transicao);
+    cria_transicao(&t, transicao.estado_anterior, transicao.entrada, transicao.estado_posterior, transicao.saida);
+    printa_transicao(t);
     return 0;
 }

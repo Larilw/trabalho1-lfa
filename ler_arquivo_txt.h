@@ -46,7 +46,7 @@ chama as funções de gravação para cada caso diferente
 */
 void gravacao_do_txt(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *automato,
         Transicao transicao[],int *tamanho_alfabeto_entrada, int *tamanho_alfabeto_saida,
-        int *numero_de_estados, int *numero_de_transicoes);
+        int *numero_de_estados, int *numero_de_estados_finais, int *numero_de_transicoes);
 
 /*Lê o arquivo fornecido pelo usuário linha por linha e exibe 
 uma mensagem de erro caso não consiga ler corretamente o arquivo
@@ -55,7 +55,7 @@ uma mensagem de erro caso não consiga ler corretamente o arquivo
   Pré-condição: Receber um arquivo
   Pós-condição: O arquivo é lido e processado 
 */
-int leitura_do_txt(char *nome_do_arquivo);
+int leitura_do_txt(char *nome_do_arquivo, Transicao *trans);
 
 
 

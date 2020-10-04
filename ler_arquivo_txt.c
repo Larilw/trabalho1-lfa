@@ -8,7 +8,7 @@
 */
 
 void printa_tudo(Leitura_do_arquivo automato, Transicao transicao[], int tamanho_alfabeto_entrada,
-        int tamanho_alfabeto_saida, int numero_de_estados, int numero_de_transicoes){
+        int tamanho_alfabeto_saida, int numero_de_estados, int numero_de_estado_finais, int numero_de_transicoes){
     int i;
     for(i=0; i < tamanho_alfabeto_entrada; i++){
         printf("%s ", automato.alfabeto_entrada[i]);
@@ -20,6 +20,11 @@ void printa_tudo(Leitura_do_arquivo automato, Transicao transicao[], int tamanho
     printf("\n");
     for(i=0; i < numero_de_estados; i++){
         printf("%s ", automato.estados[i]);
+    }
+    printf("\n");
+    printf("%s \n", automato.estado_inicial);
+    for(i=0; i < numero_de_estado_finais; i++){
+        printf("%s ", automato.estados_finais[i]);
     }
     printf("\n");
     for(i=0; i < numero_de_transicoes; i++){
@@ -91,7 +96,7 @@ void preenche_matriz(char *algarismo_do_alfabeto, Leitura_do_arquivo *automato, 
   Pós-condição: Apenas os valores necessários são mantidos
 */
 void separa_valores(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *automato,
-        int *tamanho_alfabeto_entrada, int *tamanho_alfabeto_saida, int *numero_de_estados){
+        int *tamanho_alfabeto_entrada, int *tamanho_alfabeto_saida, int *numero_de_estados, int *numero_de_estados_finais){
     char *aux = strtok(linha_lida, "{");
     int i = 0;
     aux = strtok(NULL, "{");
@@ -108,7 +113,9 @@ void separa_valores(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *a
         *tamanho_alfabeto_saida = i;
     }else if(numero_da_linha == 2){
         *numero_de_estados = i;
-    }else{}// print_matriz(automato->estados_finais, i);
+    }else{
+        *numero_de_estados_finais = i;
+    }
     
 }
 
@@ -140,6 +147,7 @@ void separa_transicoes(char *linha_lida, Transicao transicao[], int i){
 void grava_inicial(char *linha_lida, Leitura_do_arquivo *automato){
     char *aux = strtok(linha_lida, "=");
     aux = strtok(NULL, "=");
+    strtok(aux, "\n");
     strcpy(automato->estado_inicial, aux);
 }
 
@@ -154,12 +162,12 @@ chama as funções de gravação para cada caso diferente
 */
 void gravacao_do_txt(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *automato,
         Transicao transicao[],int *tamanho_alfabeto_entrada, int *tamanho_alfabeto_saida,
-        int *numero_de_estados, int *numero_de_transicoes){
+        int *numero_de_estados, int *numero_de_estados_finais, int *numero_de_transicoes){
     if(numero_da_linha == 3) grava_inicial(linha_lida, automato);
     else if(numero_da_linha >= 5){
         separa_transicoes(linha_lida, transicao, numero_da_linha-5);
         (*numero_de_transicoes)++;
-    }else separa_valores(linha_lida, numero_da_linha, automato, tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados);
+    }else separa_valores(linha_lida, numero_da_linha, automato, tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados, numero_de_estados_finais);
     
 }
 
@@ -170,7 +178,7 @@ uma mensagem de erro caso não consiga ler corretamente o arquivo
   Pré-condição: Receber um arquivo
   Pós-condição: O arquivo é lido e processado 
 */
-int leitura_do_txt(char *nome_do_arquivo){
+int leitura_do_txt(char *nome_do_arquivo, Transicao *trans){
     int numero_da_linha, tamanho_alfabeto_entrada = 0, tamanho_alfabeto_saida = 0,
         numero_de_estados = 0, numero_de_estados_finais = 0, numero_de_transicoes = 0;
     Leitura_do_arquivo automato;
@@ -184,8 +192,9 @@ int leitura_do_txt(char *nome_do_arquivo){
     }
     for(numero_da_linha = 0;fgets(linha_lida, TAMANHO_MAX, arquivo_lido) != NULL;numero_da_linha++){
         gravacao_do_txt(linha_lida, numero_da_linha, &automato, transicao, &tamanho_alfabeto_entrada,
-        &tamanho_alfabeto_saida, &numero_de_estados, &numero_de_transicoes);
+        &tamanho_alfabeto_saida, &numero_de_estados, &numero_de_estados_finais, &numero_de_transicoes);
     }
-    printa_tudo(automato, transicao, tamanho_alfabeto_entrada, tamanho_alfabeto_saida,
-    numero_de_estados, numero_de_transicoes);
+    //printa_tudo(automato, transicao, tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados, numero_de_estados_finais, numero_de_transicoes);
+    *trans = transicao[0];
+
 }
