@@ -178,7 +178,7 @@ uma mensagem de erro caso não consiga ler corretamente o arquivo
   Pré-condição: Receber um arquivo
   Pós-condição: O arquivo é lido e processado 
 */
-int leitura_do_txt(char *nome_do_arquivo, Transicao *trans){
+int leitura_do_txt(char *nome_do_arquivo){
     int numero_da_linha, tamanho_alfabeto_entrada = 0, tamanho_alfabeto_saida = 0,
         numero_de_estados = 0, numero_de_estados_finais = 0, numero_de_transicoes = 0;
     Leitura_do_arquivo automato;
@@ -195,6 +195,5 @@ int leitura_do_txt(char *nome_do_arquivo, Transicao *trans){
         &tamanho_alfabeto_saida, &numero_de_estados, &numero_de_estados_finais, &numero_de_transicoes);
     }
     //printa_tudo(automato, transicao, tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados, numero_de_estados_finais, numero_de_transicoes);
-    *trans = transicao[0];
 
 }

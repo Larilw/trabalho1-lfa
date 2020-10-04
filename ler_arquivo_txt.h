@@ -55,7 +55,7 @@ uma mensagem de erro caso não consiga ler corretamente o arquivo
   Pré-condição: Receber um arquivo
   Pós-condição: O arquivo é lido e processado 
 */
-int leitura_do_txt(char *nome_do_arquivo, Transicao *trans);
+int leitura_do_txt(char *nome_do_arquivo);
 
 
 

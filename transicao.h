@@ -3,13 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define TAMANHO 150
 
 typedef struct{
-    char estado_atual[TAMANHO];
+    char estado_atual[150];
     char caractere_lido;
-    char estado_posterior[TAMANHO];
-    char retorno[TAMANHO];
+    char estado_posterior[150];
+    char retorno[150];
 } Transicao_unitaria;
 
 void printa_transicao(Transicao_unitaria t);
