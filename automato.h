@@ -13,6 +13,8 @@ typedef struct{
     int tamanho_alfabeto_saida;
 } Automato;
 
+void printa_automato(Automato automato);
+
 int busca_estado(Automato automato, char *nome_do_estado);
 
 int busca_estado_inicial(Automato automato);

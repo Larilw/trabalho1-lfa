@@ -12,7 +12,7 @@ void carrega_transicao(Estado *estado, int numero_de_transicoes, Transicao_unita
 int busca_transicao(Estado estado, char caractere_lido){
     int i;
     for(i = 0; i < estado.numero_de_transicoes; i++){
-        if(estado.transicoes->caractere_lido == caractere_lido) return i;
+        if(estado.transicoes[i].caractere_lido == caractere_lido) return i;
     }
     return -1;
 }

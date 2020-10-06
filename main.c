@@ -8,5 +8,6 @@ int main(){
     Automato automato;
     leitura_do_txt("teste.txt", &automato);
     processa(automato);
+    deleta_automato(&automato);
     return 0;
 }
