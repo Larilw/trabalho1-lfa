@@ -4,8 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "automato.h"
+#include "estado.h"
+#include "transicao.h"
 #define TAMANHO_MAX 150
-#define TAMANHO_MATRIZ_MAX 20
+#define TAMANHO_MATRIZ_MAX 200
 
 //struct que define uma transição 
 typedef struct{
@@ -55,7 +58,7 @@ uma mensagem de erro caso não consiga ler corretamente o arquivo
   Pré-condição: Receber um arquivo
   Pós-condição: O arquivo é lido e processado 
 */
-int leitura_do_txt(char *nome_do_arquivo);
+int leitura_do_txt(char *nome_do_arquivo, Automato *automato_preenchido);
 
 
 

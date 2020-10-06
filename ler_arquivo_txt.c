@@ -1,5 +1,6 @@
 #include "ler_arquivo_txt.h"
 
+
 /*Descrição
   Entrada: 
   Retorno:
@@ -34,6 +35,45 @@ void printa_tudo(Leitura_do_arquivo automato, Transicao transicao[], int tamanho
         printf("%s ", transicao[i].estado_posterior);
         printf("%s \n", transicao[i].saida);
     }
+}
+
+int quantidade_transicoes_por_estado(Transicao *transicao, char *nome_do_estado, int numero_de_transicoes){
+    int i, quantidade = 0;
+    for(i=0; i < numero_de_transicoes; i++){
+        if(strcmp(transicao[i].estado_anterior, nome_do_estado) == 0) quantidade++;
+    }
+    return quantidade;
+}
+
+void carrega_automato(Leitura_do_arquivo automato_lido, Transicao *transicao_lida, 
+     Automato *automato, int numero_de_estados, int tamanho_alfabeto_entrada,
+      int tamanho_alfabeto_saida, int numero_de_estados_finais, int numero_de_transicoes){
+    int i, j, k = 0, numero_de_transicoes_por_estado;
+    char estado_atual[300];
+    Estado estados[numero_de_estados];
+    for(i=0; i < numero_de_estados; i++){
+        strcpy(estados[i].nome_do_estado, automato_lido.estados[i]);
+    }
+    cria_automato(automato, estados , numero_de_estados, automato_lido.alfabeto_entrada,
+     tamanho_alfabeto_entrada, automato_lido.alfabeto_saida, tamanho_alfabeto_saida);
+    for(i=0; i < numero_de_estados; i++, k = 0){
+        strcpy(estado_atual, automato->estado[i].nome_do_estado);
+        if(strcmp(automato_lido.estado_inicial, estado_atual)== 0) automato->estado[i].inicial = 1;
+        for(j=0; j < numero_de_estados_finais; j++){
+            if(strcmp(estado_atual, automato_lido.estados_finais[j]) == 0) automato->estado[i].final = 1;
+        }
+        numero_de_transicoes_por_estado = quantidade_transicoes_por_estado(transicao_lida, estado_atual, numero_de_transicoes);
+        Transicao_unitaria transicoes[numero_de_transicoes_por_estado];
+        for(j=0; j < numero_de_transicoes; j++){
+            if(strcmp(estado_atual, transicao_lida[j].estado_anterior) == 0){
+                cria_transicao(&transicoes[k], estado_atual, transicao_lida[j].entrada,
+                 transicao_lida[j].estado_posterior, transicao_lida[j].saida);
+                 k++;
+            }
+        }
+        carrega_transicao(&automato->estado[i], numero_de_transicoes_por_estado, transicoes);
+    }
+    
 }
 
 void print_matriz(char matriz[TAMANHO_MATRIZ_MAX][TAMANHO_MATRIZ_MAX], int l){
@@ -178,7 +218,7 @@ uma mensagem de erro caso não consiga ler corretamente o arquivo
   Pré-condição: Receber um arquivo
   Pós-condição: O arquivo é lido e processado 
 */
-int leitura_do_txt(char *nome_do_arquivo){
+int leitura_do_txt(char *nome_do_arquivo, Automato *automato_preenchido){
     int numero_da_linha, tamanho_alfabeto_entrada = 0, tamanho_alfabeto_saida = 0,
         numero_de_estados = 0, numero_de_estados_finais = 0, numero_de_transicoes = 0;
     Leitura_do_arquivo automato;
@@ -194,6 +234,9 @@ int leitura_do_txt(char *nome_do_arquivo){
         gravacao_do_txt(linha_lida, numero_da_linha, &automato, transicao, &tamanho_alfabeto_entrada,
         &tamanho_alfabeto_saida, &numero_de_estados, &numero_de_estados_finais, &numero_de_transicoes);
     }
+
+    carrega_automato( automato, transicao, automato_preenchido, numero_de_estados,
+     tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados_finais, numero_de_transicoes);
     //printa_tudo(automato, transicao, tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados, numero_de_estados_finais, numero_de_transicoes);
 
 }

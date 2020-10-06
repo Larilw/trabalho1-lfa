@@ -15,7 +15,7 @@ void print_da_palavra(char *palavra, int posicao){
 void processa(Automato automato){
     int i = 0, posicao_do_inicial, posicao_da_transicao, posicao_do_estado, rejeitada = 0;
     char palavra[200], palavra_saida[200], caractere_lido;
-    recebe_palavra(&palavra);
+    recebe_palavra(palavra);
     posicao_do_inicial = busca_estado_inicial(automato);
     if(posicao_do_inicial >= 0){ 
         posicao_da_transicao = busca_transicao(automato.estado[posicao_do_inicial], palavra[0]);

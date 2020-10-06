@@ -13,8 +13,8 @@ typedef struct{
     int numero_de_transicoes;
 } Estado;
 
-void cria_estado(Estado *estado, char *nome_do_estado, int final, int inicial,
-    int numero_de_transicoes, Transicao_unitaria transicoes[]);
+void carrega_transicao(Estado *estado, int numero_de_transicoes, Transicao_unitaria transicoes[]);
+
 
 int busca_transicao(Estado estado, char caractere_lido);
 

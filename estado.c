@@ -1,11 +1,7 @@
 #include "estado.h"
 
-void cria_estado(Estado *estado, char *nome_do_estado, int final, int inicial,
-     int numero_de_transicoes, Transicao_unitaria transicoes[]){
+void carrega_transicao(Estado *estado, int numero_de_transicoes, Transicao_unitaria transicoes[]){
     int i;
-    strcpy(estado->nome_do_estado, nome_do_estado);
-    estado->final = final;
-    estado->inicial = inicial;
     estado->numero_de_transicoes = numero_de_transicoes;
     estado->transicoes = malloc(sizeof(Transicao_unitaria) * numero_de_transicoes);
     for(i = 0; i < numero_de_transicoes; i++){
