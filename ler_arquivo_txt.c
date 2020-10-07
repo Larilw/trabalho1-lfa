@@ -266,7 +266,7 @@ int leitura_do_txt(char *nome_do_arquivo, Automato *automato_preenchido){
         gravacao_do_txt(linha_lida, numero_da_linha, &automato, transicao, &tamanho_alfabeto_entrada,
         &tamanho_alfabeto_saida, &numero_de_estados, &numero_de_estados_finais, &numero_de_transicoes);
     }
-
+    printf("Arquivo carregado com sucesso\n");
     carrega_automato( automato, transicao, automato_preenchido, numero_de_estados,
      tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados_finais, numero_de_transicoes);
 

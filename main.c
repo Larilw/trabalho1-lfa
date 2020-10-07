@@ -18,22 +18,20 @@ int main(){
     scanf("%d%*c", &i);
     while(i != 3){
         if(i == 1){
-            if(automato_carregado == 1) deleta_automato(&automato);
             printf("Digite o caminho completo do arquivo\n");
             fgets(caminho_arquivo, 1000, stdin);
             strtok(caminho_arquivo, "\n");
-            leitura_do_txt(caminho_arquivo, &automato);
-            printf("Automato carregado com sucesso\n");
-            automato_carregado = 1;
+            automato_carregado = leitura_do_txt(caminho_arquivo, &automato);
+            
             
         }
         else if(i == 2){
-            if(automato_carregado == 1) processa(automato);
+            if(automato_carregado != 1) processa(automato);
             else printf("Nao ha automato carregado\n");
         }
         printf("Digite 1 para carregar o automato, 2 para testar palavra e 3 para finalizar\n");
         scanf("%d%*c", &i);
     }
-    if(automato_carregado == 1) deleta_automato(&automato);
+    if(automato_carregado != 1) deleta_automato(&automato);
     return 0;
 }
