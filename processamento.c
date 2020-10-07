@@ -1,10 +1,23 @@
 #include "processamento.h"
 
+/*Lê a palavra digitada pelo usuário
+  Entrada: String da palavra
+  Retorno: Nenhum
+  Pré-condição: Usuário escolher no processamento testar palavra
+  Pós-condição: A palavra é lida
+*/
 void recebe_palavra(char *palavra){
     printf("Digite a palavra a ser testada:\n");
     fgets(palavra, 200, stdin);
 }
 
+/*Imprime a palavra
+  Entrada: String com a palavra, inteiro que representa a posição do caractere na palavra, inteiro
+  que representa o tamanho da palavra de saída
+  Retorno: Nenhum
+  Pré-condição: Palavra ter sido lida
+  Pós-condição: Palavra é impressa na tela
+*/
 void print_da_palavra(char *palavra, int posicao, int tamanho_saida){
     int i;
     strtok(palavra, "\n");
@@ -16,6 +29,13 @@ void print_da_palavra(char *palavra, int posicao, int tamanho_saida){
     }
 }
 
+/*Processa o automato e as palavras e checa as regras de aceitação e rejeição
+  Entrada: Struct do automato
+  Retorno: Nenhum
+  Pré-condição: Arquivo lido, sem espaços sobrando, dividido e salvo na struct do automato
+  Pós-condição: Automato processado de acordo com a vontade do usuário e é impresso na tela o resultado
+  das operações
+*/
 void processa(Automato automato){
     int i = 0, posicao_do_inicial, posicao_da_transicao, posicao_do_estado, rejeitada = 0, tamanho_saida;
     char palavra[200], palavra_saida[200], caractere_lido, saida_anterior[200], palavra_saida_aux[200];

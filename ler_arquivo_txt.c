@@ -1,5 +1,11 @@
 #include "ler_arquivo_txt.h"
 
+/*Remove espaços sobrando no automato, menos nas transições
+  Entrada: string com a linha lida, string com a linha sem espaços
+  Retorno: Nenhum
+  Pré-condição: Arquivo lido e dividido por linhas
+  Pós-condição: Linhas sem espaços sobrando
+*/
 void remove_espacos(char *linha_lida, char *linha_sem_espacos){
     int i, j = 0;
     for(i=0; i < strlen(linha_lida); i++){
@@ -11,7 +17,12 @@ void remove_espacos(char *linha_lida, char *linha_sem_espacos){
     linha_sem_espacos[j] = 0;
 }
 
-
+/*Remove espaços sobrando nas transições
+  Entrada: string com a linha lida, string com a linha sem espaços
+  Retorno: Nenhum
+  Pré-condição: Arquivo lido e dividido por linhas
+  Pós-condição: Linhas sem espaços sobrando
+*/
 void remove_espacos_transicao(char *linha_lida, char *linha_sem_espacos){
     int i, j = 0;
     for(i=0; i < strlen(linha_lida); i++){
@@ -33,42 +44,12 @@ void remove_espacos_transicao(char *linha_lida, char *linha_sem_espacos){
     linha_sem_espacos[j] = 0;
 }
 
-/*Descrição
-  Entrada: 
-  Retorno:
-  Pré-condição:
-  Pós-condição:
+/*Calcula a quantidade de transições que cada estado possui
+  Entrada: struct de transição, string com o nome do estado, inteiro que representa o número de transições
+  Retorno: Inteiro com a quantidade de transições de cada estado
+  Pré-condição: Automato lido e separado em partes
+  Pós-condição: Quantidde de transições por estado é conhecida
 */
-
-void printa_tudo(Leitura_do_arquivo automato, Transicao transicao[], int tamanho_alfabeto_entrada,
-        int tamanho_alfabeto_saida, int numero_de_estados, int numero_de_estado_finais, int numero_de_transicoes){
-    int i;
-    for(i=0; i < tamanho_alfabeto_entrada; i++){
-        printf("%s ", automato.alfabeto_entrada[i]);
-    }
-    printf("\n");
-    for(i=0; i < tamanho_alfabeto_saida; i++){
-        printf("%s ", automato.alfabeto_saida[i]);
-    }
-    printf("\n");
-    for(i=0; i < numero_de_estados; i++){
-        printf("%s ", automato.estados[i]);
-    }
-    printf("\n");
-    printf("%s \n", automato.estado_inicial);
-    for(i=0; i < numero_de_estado_finais; i++){
-        printf("%s ", automato.estados_finais[i]);
-    }
-    printf("\n");
-    for(i=0; i < numero_de_transicoes; i++){
-
-        printf("%s ", transicao[i].estado_anterior);
-        printf("%s ", transicao[i].entrada);
-        printf("%s ", transicao[i].estado_posterior);
-        printf("%s \n", transicao[i].saida);
-    }
-}
-
 int quantidade_transicoes_por_estado(Transicao *transicao, char *nome_do_estado, int numero_de_transicoes){
     int i, quantidade = 0;
     for(i=0; i < numero_de_transicoes; i++){
@@ -77,6 +58,16 @@ int quantidade_transicoes_por_estado(Transicao *transicao, char *nome_do_estado,
     return quantidade;
 }
 
+/*Transfere os dados das duas structs de automato e transição para outras structs de forma a separar
+os dados para uso futuro
+  Entrada: struct do automato de leitura, struct transição de leitura, struct do automato final,
+  inteiro que representa o número de estados que o automato possui, inteiro que representa o número de
+  estados finais que o automato possui, inteiro que representa o numero de transições que o automato
+  possui
+  Retorno: Nenhum
+  Pré-condição: Structs de leitura preenchidas previamente
+  Pós-condição: Divide-se os dados de forma hierárquica dentro do automato novo criado
+*/
 void carrega_automato(Leitura_do_arquivo automato_lido, Transicao *transicao_lida, 
      Automato *automato, int numero_de_estados, int tamanho_alfabeto_entrada,
       int tamanho_alfabeto_saida, int numero_de_estados_finais, int numero_de_transicoes){
@@ -108,28 +99,21 @@ void carrega_automato(Leitura_do_arquivo automato_lido, Transicao *transicao_lid
     
 }
 
-void print_matriz(char matriz[TAMANHO_MATRIZ_MAX][TAMANHO_MATRIZ_MAX], int l){
-    int i, j;
-    for(i=0; i<l; i++){
-        for(j=0; j< TAMANHO_MATRIZ_MAX; j++){
-            printf("%c", matriz[i][j]);
-        }
-        printf(",");
-    }
-    printf("\n");
-}
-
-
+/*Guarda os elementos de transição na struct de transição
+  Entrada: string com o nome do estado atual na transição, string com a entrada recebida na transição,
+  string com o estado posterior à transição, string com a saída da transição, struct de transição,
+  inteiro que define onde guradar os elementos
+  Retorno: Nenhum
+  Pré-condição: Arquivo lido, dividido por linhas e processado de forma a possuir apenas os conteúdos
+  que devem ser utilizados
+  Pós-condição: Struct de transição preenchida
+*/
 void preenche_vetor(char *estado1, char *entrada, char *estado2, char *saida, Transicao transicao[], int i){
     int t;
     strcpy(transicao[i].estado_anterior, estado1);
-    //printf("%s\n", transicao[i].estado_anterior);
     strcpy(transicao[i].estado_posterior, estado2);
-    //printf("%s\n", automato->transicao[i].estado_posterior);
     strcpy(transicao[i].entrada, entrada);
-    //printf("%s\n", automato->transicao[i].entrada);
     strcpy(transicao[i].saida, saida);
-    //printf("%s\n", automato->transicao[i].saida);
 }
 
 /*Guarda os elementos obtidos em seus tipos na struct automato 
@@ -191,6 +175,13 @@ void separa_valores(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *a
     
 }
 
+/*Separa o texto recebido dos valores necessários das transições
+  Entrada: String com a linha lida, struct de transição,
+  inteiro que representa o numero em que se inicia o preenchimento da struct
+  Retorno: Nenhum
+  Pré-condição: Arquivo lido e dividido de acordo com a linha
+  Pós-condição: Separação das partes que serão utilizadas posteriormente
+*/
 void separa_transicoes(char *linha_lida, Transicao transicao[], int i){
     char *aux = strtok(linha_lida, "=");
     char *aux2, *aux3, *aux4;
@@ -206,6 +197,8 @@ void separa_transicoes(char *linha_lida, Transicao transicao[], int i){
     aux4 = strtok(NULL, ",");
     aux = strtok(aux2, ",");
     aux2 = strtok(NULL, ",");
+    /*aux representa o estado atual de uma transição, aux2 representa a entrada, aux3 representa
+    o estado posterior à transição e aux4 representa a saída dessa transição*/
     preenche_vetor(aux, aux2, aux3, aux4, transicao, i);
 }
 
@@ -214,7 +207,7 @@ void separa_transicoes(char *linha_lida, Transicao transicao[], int i){
   Entrada: String com a linha lida, ponteiro que aponta para a struct automato
   Retorno: Nenhum
   Pré-condição: Arquivo lido e dividido de acordo com o número da linha 
-  Pós-condição: Preenchimento do campo de estado inicial na struct automato
+  Pós-condição: Preenchimento do campo de estado inicial na struct de leitura do automato
 */
 void grava_inicial(char *linha_lida, Leitura_do_arquivo *automato){
     char *aux = strtok(linha_lida, "=");
@@ -227,10 +220,10 @@ void grava_inicial(char *linha_lida, Leitura_do_arquivo *automato){
 /*Classifica as linhas lidas conforme o número da linha, 
 chama as funções de gravação para cada caso diferente
   Entrada: String com a linha lida, inteiro representando o número da linha, 
-  ponteiro que aponta para a struct automato
+  ponteiro que aponta para a struct de leitura do automato
   Retorno: Nenhum
   Pré-condição: Arquivo ter sido lido com sucesso
-  Pós-condição: O arquivo é dividido para gravação 
+  Pós-condição: São retirados os espaços sobrando e o arquivo é dividido para gravação
 */
 void gravacao_do_txt(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *automato,
         Transicao transicao[],int *tamanho_alfabeto_entrada, int *tamanho_alfabeto_saida,

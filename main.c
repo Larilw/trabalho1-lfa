@@ -4,6 +4,12 @@
 #include "automato.h"
 #include "processamento.h"
 
+/*Recebe as entradas do usuário e chama as funções de acordo com cada entrada
+  Entrada: Nenhuma
+  Retorno: Inteiro que representa se houve erros de execução ou não
+  Pré-condição: Nenhuma
+  Pós-condição: Arquivo é lido e processado
+*/
 int main(){
     int i = 0, automato_carregado = 0;
     char caminho_arquivo[1000];

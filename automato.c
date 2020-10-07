@@ -1,31 +1,11 @@
 #include "automato.h"
 
-void printa_automato(Automato automato){
-    int i, j;
-    printf("alfabeto_entrada={%s}\n", automato.alfabeto_entrada);
-    printf("alfabeto_saida={%s}\n", automato.alfabeto_saida);
-    printf("estados={");
-    for(i=0; i < automato.numero_de_estados; i++){
-        printf("%s,", automato.estado[i].nome_do_estado);
-    }
-    printf("}\n");
-    for(i=0; i < automato.numero_de_estados; i++){
-        if(automato.estado[i].inicial != 0)printf("inicial=%s\n", automato.estado[i].nome_do_estado);
-    }
-    printf("finais={");
-    for(i=0; i < automato.numero_de_estados; i++){
-        if(automato.estado[i].final != 0)printf("%s,", automato.estado[i].nome_do_estado);
-    }
-    printf("}\n");
-    for(i=0; i < automato.numero_de_estados; i++){
-        for(j=0; j < automato.estado[i].numero_de_transicoes; j++){
-            printf("(%s,%c) = (%s,%s)\n", automato.estado[i].transicoes[j].estado_atual,
-             automato.estado[i].transicoes[j].caractere_lido,
-              automato.estado[i].transicoes[j].estado_posterior, automato.estado[i].transicoes[j].retorno);
-        }
-    }
-}
-
+/*Busca estado de acordo com seu nome
+  Entrada: Struct automato, string com o nome do estado
+  Retorno: Inteiro que possui a posição do estado ou -1 se não for encontrado
+  Pré-condição: Automato preenchido e nome do estado conhecido
+  Pós-condição: Estado procurado é encontrado pela posição
+*/
 int busca_estado(Automato automato, char *nome_do_estado){
     int i;
     for(i=0; i < automato.numero_de_estados; i++){
@@ -34,6 +14,12 @@ int busca_estado(Automato automato, char *nome_do_estado){
     return -1;
 }
 
+/*Busca o estado inicial do automato
+  Entrada: Struct do automato
+  Retorno: Inteiro que retorna a posição do estado inicial ou -1 se não tiver inicial
+  Pré-condição: Struct do automato ter sido preenchida
+  Pós-condição: Estado inicial do automato é conhecido
+*/
 int busca_estado_inicial(Automato automato){
     int i;
     for(i=0; i < automato.numero_de_estados; i++){
@@ -42,6 +28,14 @@ int busca_estado_inicial(Automato automato){
     return -1;
 }
 
+/*Criação da struct do autômato
+  Entrada: ponteiro para struct automato, struct de vetor de estados, inteiro que representa o número
+  de estados do automato, string com o alfabeto de entrada, inteiro com o tamanho do alfabeto de entrada,
+  string com o alfabeto de saída, inteiro com o tamanho do alfabeto de saída
+  Retorno: Nenhum
+  Pré-condição: O arquivo ter sido lido, sem espaços sobrando e salvo em duas structs de leitura de automato e transição
+  Pós-condição: Automato criado
+*/
 void cria_automato(Automato *automato, Estado estados[], int numero_de_estados, char alfabeto_entrada[][200], int tamanho_alfabeto_entrada,
      char alfabeto_saida[][200], int tamanho_alfabeto_saida){
     int i;
@@ -62,6 +56,12 @@ void cria_automato(Automato *automato, Estado estados[], int numero_de_estados, 
     }
 }
 
+/*Libera as partes do automato alocadas dinâmicamente
+  Entrada: Ponteiro para struct automato
+  Retorno: Nenhum
+  Pré-condição: Struct automato ter sido preenchida
+  Pós-condição: Memória alocada dinâmicamente é liberada
+*/
 void deleta_automato(Automato *automato){
     int i;
     free(automato->alfabeto_entrada);
