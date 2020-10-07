@@ -22,6 +22,7 @@ void processa(Automato automato){
     recebe_palavra(palavra);
     tamanho_saida = strlen(palavra)-5;
     posicao_do_inicial = busca_estado_inicial(automato);
+    strcpy(palavra_saida, "");
     if(posicao_do_inicial >= 0){ 
         posicao_da_transicao = busca_transicao(automato.estado[posicao_do_inicial], palavra[0]);
         printf("[%s]", automato.estado[posicao_do_inicial].nome_do_estado);
@@ -53,9 +54,12 @@ void processa(Automato automato){
         }
         else if(rejeitada == 1) printf("REJEITA\n");
     }
+    if(rejeitada == 1) printf("REJEITA\n");
     printf("palavra de saida: ");
     for(i=0; i < strlen(palavra_saida); i++){
         if(palavra_saida[i] != '@') printf("%c", palavra_saida[i]);
     }
     printf("\n");
+    strcpy(palavra, "");
+    strcpy(palavra_saida, "");
 }

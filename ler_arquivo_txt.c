@@ -1,5 +1,37 @@
 #include "ler_arquivo_txt.h"
 
+void remove_espacos(char *linha_lida, char *linha_sem_espacos){
+    int i, j = 0;
+    for(i=0; i < strlen(linha_lida); i++){
+        if(linha_lida[i] != ' '){
+            linha_sem_espacos[j] = linha_lida[i];
+            j++;
+        }
+    }
+    linha_sem_espacos[j] = 0;
+}
+
+
+void remove_espacos_transicao(char *linha_lida, char *linha_sem_espacos){
+    int i, j = 0;
+    for(i=0; i < strlen(linha_lida); i++){
+        if(linha_lida[i] != ' '){
+            linha_sem_espacos[j] = linha_lida[i];
+            j++;
+        }
+        else if(i > 0){
+            if(linha_lida[i-1] == ')'){
+                linha_sem_espacos[j] = linha_lida[i];
+                j++;
+            }
+            else if(linha_lida[i-1] == '='){
+                linha_sem_espacos[j] = linha_lida[i];
+                j++;
+            }
+        }
+    }
+    linha_sem_espacos[j] = 0;
+}
 
 /*Descrição
   Entrada: 
@@ -203,12 +235,19 @@ chama as funções de gravação para cada caso diferente
 void gravacao_do_txt(char *linha_lida, int numero_da_linha, Leitura_do_arquivo *automato,
         Transicao transicao[],int *tamanho_alfabeto_entrada, int *tamanho_alfabeto_saida,
         int *numero_de_estados, int *numero_de_estados_finais, int *numero_de_transicoes){
-    if(numero_da_linha == 3) grava_inicial(linha_lida, automato);
+    char linha_formatada[strlen(linha_lida)];
+    if(numero_da_linha == 3){
+        remove_espacos(linha_lida, linha_formatada);
+        grava_inicial(linha_formatada, automato);
+    }
     else if(numero_da_linha >= 5){
-        separa_transicoes(linha_lida, transicao, numero_da_linha-5);
+        remove_espacos_transicao(linha_lida, linha_formatada);
+        separa_transicoes(linha_formatada, transicao, numero_da_linha-5);
         (*numero_de_transicoes)++;
-    }else separa_valores(linha_lida, numero_da_linha, automato, tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados, numero_de_estados_finais);
-    
+    }else{
+        remove_espacos(linha_lida, linha_formatada);
+        separa_valores(linha_formatada, numero_da_linha, automato, tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados, numero_de_estados_finais);
+    }
 }
 
 /*Lê o arquivo fornecido pelo usuário linha por linha e exibe 
@@ -237,6 +276,5 @@ int leitura_do_txt(char *nome_do_arquivo, Automato *automato_preenchido){
 
     carrega_automato( automato, transicao, automato_preenchido, numero_de_estados,
      tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados_finais, numero_de_transicoes);
-    //printa_tudo(automato, transicao, tamanho_alfabeto_entrada, tamanho_alfabeto_saida, numero_de_estados, numero_de_estados_finais, numero_de_transicoes);
 
 }
